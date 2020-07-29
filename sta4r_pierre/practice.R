@@ -30,11 +30,18 @@ get_things <- function(api, iot_id = NULL, name = NULL) {
 #abc <- get_things(api=api, name = "TV-157")
 
 
-# get location (iot_id, location.coordinates)
-get_location <- function (api, iot_id=NULL, location.coordinates=NULL, location.type=NULL){
+# get location (iot_id, location.coordinates, name) description too ????
+get_locations <- function (api, iot_id=NULL, name=NULL, location.coordinates=NULL, location.type=NULL){
   
-  if (is.null(iot_id) & is.null(location.coordinates) & is.null(location.type)){
+  if (is.null(iot_id) & is.null(name) & is.null(location.coordinates) & is.null(location.type)){
     x <- GET(url = paste0(api, "/Locations"))
+    df <- fromJSON(as.character(x))
+    return (df$value)
+  }
+  
+  else if (is.null(iot_id) & is.null(location.coordinates) & is.null(location.type)){
+    name <- gsub(" ","%20",name)
+    x <- GET(url = paste0(api, "/Locations?$filter=name%20eq%20%27", name, "%27"))
     df <- fromJSON(as.character(x))
     return (df$value)
   }
@@ -54,11 +61,18 @@ get_location <- function (api, iot_id=NULL, location.coordinates=NULL, location.
   
   
 }
+name <- "MBOWN-208 - 29S.02E.13.113A"
 # type <- "point"
 # lc <- c(-105.795, 32.8542)
 # L <- get_location(api, location.coordinates = lc, location.type = type)
+abc <- get_locations(api=api, name=name)
 
 # get datastreams
+get_datastreams <- function (api, iot_id=NULL, name=NULL){
+  x <- GET(url = paste0(api, "/Datastreams"))
+  df <- fromJSON(as.character(x))
+  return (df$value) 
+}
 
 
 
