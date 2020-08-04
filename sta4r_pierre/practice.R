@@ -3,6 +3,62 @@ library(jsonlite)
 
 api <- "http://sta-demo.internetofwater.dev/api/v1.1"
 
+# allow numerical input(id, results) to have logical operators
+# get_things
+# get_things_by_id
+# get_things_by_name
+# get_things_by_add_property
+# get_things_by_location
+# get_things_by_area
+# #get_things_by_time
+# 
+# get_datastreams
+# get_datastreams_by_things #name of things
+# get_datastreams_by_id #id of things
+# get_datastreams_by_name #name of datastreams
+# get_datastreams_by_sensor
+# get_datastreams_by_observed_property
+# get_datastreams_by_location_name
+# get_datastreams_by_latlong #lat long, only for points
+# get_datastreams_by_area #sf object polygon
+# get_datastreams_by_unit
+# get_datastreams_by_time #provde begin, end time, see sos4r example
+# 
+# get_observations
+# get_observations_by_datastream
+# get_observations_by_id
+# get_observations_by_observed_property
+# get_observations_by_location_name
+# get_observations_by_latlong
+# get_observations_by_area
+# get_observations_by_time #provde begin, end time, see sos4r example
+# get_observations_by_result # logical operations, less than, eqaul to greater than specified value
+# get_observations_by_feature_of_interest
+# get_observations_by_sensor
+# 
+# get_locations
+# get_locations_by_id
+# get_locations_by_name
+# get_locations_by_area
+# get_locations_by_description
+
+# add get sensor, featureofinterest, observedproperty later 
+
+# add attributes to functions based on following filter options:
+# https://fraunhoferiosb.github.io/FROST-Server/sensorthingsapi/STA-Example-Queries.html
+# https://fraunhoferiosb.github.io/FROST-Server/sensorthingsapi/STA-Filtering.html 
+
+# helpful example of a SensorThingsAPI application:
+# https://developers.sensorup.com/examples/
+
+
+
+
+
+
+
+
+
 # get things (by iot_id & name)
 get_things <- function(api, iot_id = NULL, name = NULL) {
   
@@ -80,7 +136,7 @@ get_datastreams <- function (api, iot_id=NULL, name=NULL){
 
 
 # they probably are interested in datastreeams, (by location, time, observed property)
-# look at sls funtions made by the other person, phenomenon is observedProperty, sites=locations
+# look at sos funtions made by the other person, phenomenon is observedProperty, sites=locations
 # pagination
 
 
