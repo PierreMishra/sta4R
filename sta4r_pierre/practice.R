@@ -2,27 +2,69 @@ library(httr)
 library(jsonlite)
 
 api <- "http://sta-demo.internetofwater.dev/api/v1.1"
+id <- 201
+name <- '354017108445201'
+prop.name <- "ThingDataProvider"
+prop.value <- "U.S. Geological Survey"
 
-# allow numerical input(id, results) to have logical operators
+############################# THINGS ###############################
+# add multiple things by id or names
+
+# Get all things
+get_things <- function(api){
+  x <- GET(url = paste0(api, "/Things"))
+  df <- fromJSON(as.character(x))
+  return (df$value)
+}
+
+# Get things by IoT ID
+get_things_by_id <- function(api, id){
+  x <- GET(url = paste0(api, "/Things?$filter=@iot.id%20eq%20", id))
+  df <- fromJSON(as.character(x))
+  return (df$value)
+}
+
+# Get things by thing's name
+get_things_by_name <- function(api, name){
+  x <- GET(url = paste0(api, "/Things?$filter=name%20eq%20%27", name, "%27"))
+  df <- fromJSON(as.character(x))
+  return (df$value)
+}
+
+# Get things by optional properties
+# prop.name and prop.value should be character values
+get_things_by_optional_property <- function(api, prop.name, prop.value){
+  prop.value <- gsub(" ","%20",prop.value)
+  x <- GET(url = paste0(api, "/Things?$filter=properties/", prop.name,
+                        "%20eq%20%27", prop.value, "%27"))
+  df <- fromJSON(as.character(x))
+  return (df$value)
+}
+
+# Get things by coordinates (longitude, latitude)
+
+
+
+## allow numerical input(id, results) to have logical operators
 # get_things
 # get_things_by_id
 # get_things_by_name
 # get_things_by_add_property
-# get_things_by_location
+# get_things_by_coordinates
 # get_things_by_area
 # #get_things_by_time
 # 
 # get_datastreams
-# get_datastreams_by_things #name of things
-# get_datastreams_by_id #id of things
-# get_datastreams_by_name #name of datastreams
+# get_datastreams_by_things ##name of things
+# get_datastreams_by_id ##id of things
+# get_datastreams_by_name ##name of datastreams
 # get_datastreams_by_sensor
 # get_datastreams_by_observed_property
 # get_datastreams_by_location_name
-# get_datastreams_by_latlong #lat long, only for points
-# get_datastreams_by_area #sf object polygon
+# get_datastreams_by_latlong ##lat long, only for points
+# get_datastreams_by_area ##sf object polygon
 # get_datastreams_by_unit
-# get_datastreams_by_time #provde begin, end time, see sos4r example
+# get_datastreams_by_time ##provde begin, end time, see sos4r example
 # 
 # get_observations
 # get_observations_by_datastream
@@ -31,8 +73,8 @@ api <- "http://sta-demo.internetofwater.dev/api/v1.1"
 # get_observations_by_location_name
 # get_observations_by_latlong
 # get_observations_by_area
-# get_observations_by_time #provde begin, end time, see sos4r example
-# get_observations_by_result # logical operations, less than, eqaul to greater than specified value
+# get_observations_by_time ## provde begin, end time, see sos4r example
+# get_observations_by_result ## logical operations, less than, eqaul to greater than specified value
 # get_observations_by_feature_of_interest
 # get_observations_by_sensor
 # 
@@ -48,7 +90,7 @@ api <- "http://sta-demo.internetofwater.dev/api/v1.1"
 # https://fraunhoferiosb.github.io/FROST-Server/sensorthingsapi/STA-Example-Queries.html
 # https://fraunhoferiosb.github.io/FROST-Server/sensorthingsapi/STA-Filtering.html 
 
-# helpful example of a SensorThingsAPI application:
+# helpful example of an application of SensorThingsAPI:
 # https://developers.sensorup.com/examples/
 
 
