@@ -8,6 +8,7 @@ prop.name <- "ThingDataProvider"
 prop.value <- "U.S. Geological Survey"
 
 ############################# THINGS ###############################
+
 # add multiple things by id or names
 
 # Get all things
