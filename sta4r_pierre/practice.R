@@ -1,15 +1,34 @@
 library(httr)
 library(jsonlite)
+library(sf)
+library(tidyverse)
 
 api <- "http://sta-demo.internetofwater.dev/api/v1.1"
 id <- 201
 name <- '354017108445201'
 prop.name <- "ThingDataProvider"
 prop.value <- "U.S. Geological Survey"
+longitude <- -106.6997
+latitude <- 31.7893
+
+# colorado shapefile
+unzip("Colorado_State_Boundary-shp.zip", overwrite = TRUE)
+colorado_shapefile <- st_read("Colorado_State_Boundary.shp")
+polygon <- colorado_shapefile$geometry[[1]][[1]] #but not everyone's sf object will be like this right?
+polygon <- as.matrix(polygon)
+polygon_vector <- as.vector(t(polygon))
+# insert comma at even indices
+# for (n in polygon[1,]){
+#    paste
+#   }
+a <- as.vector(polygon[1,])
+paste0(a, collapse=", ")
 
 ############################# THINGS ###############################
 
 # add multiple things by id or names
+# add an argument that lets you choose to display "expand" columns or not
+# Look at logical operators in Sensorup website
 
 # Get all things
 get_things <- function(api){
@@ -43,7 +62,21 @@ get_things_by_optional_property <- function(api, prop.name, prop.value){
 }
 
 # Get things by coordinates (longitude, latitude)
+# use this format https://sta-demo.internetofwater.dev/api/v1.1/Things?$expand=Datastreams($filter=phenomenonTime%20le%202019-12-13T21:26:00.000Z)
+# it is only filtering the entity immediately before, so if you write wrong coordinates, it will still show you all the things
+# use this https://sta-demo.internetofwater.dev/api/v1.1/Things?$filter=st_equals(Locations/location,geography%27POINT(-106.6997%2031.7893)%27)
+get_things_by_coordinates <- function(api, longitude, latitude){
+  x <- GET(url = paste0(api, "/Things?$filter=st_equals(Locations/location,geography%27POINT(",
+                        longitude, "%20", latitude, ")%27)"))
+  df <- fromJSON(as.character(x))
+  return (df$value)
+}
 
+# Get things by area (sf_object)
+#/v1.0/Locations?$expand=Things&$filter=st_within(location, geography'POLYGON ((-79.39 43.651,-79.371 43.651,-79.371 43.641,-79.39 43.641,-79.39 43.651))')
+
+
+# Get things by phenomenonTime
 
 
 ## allow numerical input(id, results) to have logical operators
@@ -53,7 +86,7 @@ get_things_by_optional_property <- function(api, prop.name, prop.value){
 # get_things_by_add_property
 # get_things_by_coordinates
 # get_things_by_area
-# #get_things_by_time
+# ###get_things_by_time (INVALID)(Because it depends on datastreams which has a range of phenomenonTime)
 # 
 # get_datastreams
 # get_datastreams_by_things ##name of things
