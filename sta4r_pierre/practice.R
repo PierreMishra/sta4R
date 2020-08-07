@@ -74,7 +74,9 @@ get_things_by_coordinates <- function(api, longitude, latitude){
 
 # Get things by area (sf_object)
 #/v1.0/Locations?$expand=Things&$filter=st_within(location, geography'POLYGON ((-79.39 43.651,-79.371 43.651,-79.371 43.641,-79.39 43.641,-79.39 43.651))')
-
+# wkt
+# st_as_text
+# basic function (option - by what, and then call smaller functions (with relevant arguments))
 
 # Get things by phenomenonTime
 
